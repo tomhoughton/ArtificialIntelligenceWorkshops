@@ -96,3 +96,11 @@ These are the notes for my artificial intelligence work
     ```
 
 ## Task B: Create a better Bot Class:
+- rUN 1.TXT
+- Diagonal movement
+- Remember direction of the target
+    - Need class variables
+- Continue to move in current direction
+- When it hits a wall or map edge then pick a new direction  at 90 degrees, which direction is best is based on the current direction.
+- Can check with is ChooseNextGridPosition() will return false
+- you can call glevel.isValid()

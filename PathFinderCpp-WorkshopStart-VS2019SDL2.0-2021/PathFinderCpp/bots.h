@@ -7,6 +7,7 @@
 //======================================================================================
 
 #include "botbase.h"
+#include <vector>
 
 class cBotRandom : public cBotBase
 {
@@ -16,6 +17,22 @@ class cBotRandom : public cBotBase
 class cBotSimple : public cBotBase
 {
 	virtual void ChooseNextGridPosition();
+};
+
+class cBotSimple2 : public cBotBase
+{
+public: 
+	
+
+
+
+	virtual void ChooseNextGridPosition();
+
+private:
+	float getAngle();
+
+	std::vector<int> getMovementVector(float angle);
+	std::vector<int> rotateOnCollision(std::vector<int> originalMovementVector);
 };
 
 
