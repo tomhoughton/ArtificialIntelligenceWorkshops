@@ -7,6 +7,7 @@
 //======================================================================================
 
 #include "botbase.h"
+#include <iostream>
 #include <vector>
 
 class cBotRandom : public cBotBase
@@ -23,16 +24,30 @@ class cBotSimple2 : public cBotBase
 {
 public: 
 	
+	bool isNearWall;
+	bool wallIsRight;
+	bool wallIsUp;
+	bool handleCorner;
 
+	int prevX;
+	int prevY;
 
+	std::vector<int> cornerLocation;
+
+	cBotSimple2();
 
 	virtual void ChooseNextGridPosition();
+	std::string checkWallLocation();
 
 private:
 	float getAngle();
 
 	std::vector<int> getMovementVector(float angle);
+	//std::vector<int> escapeCorner();
 	std::vector<int> rotateOnCollision(std::vector<int> originalMovementVector);
+	//std::vector<int> checkForCollision(std::vector<int> movementVector, int newX, int newY);
+	bool checkForCorner();
+
 };
 
 

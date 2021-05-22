@@ -3,34 +3,112 @@
 #include <iostream>
 #include <vector>
 
+cBotSimple2::cBotSimple2() {
+	isNearWall = false;
+	
+	cornerLocation = { 0 , 0 };
+}
 
 void cBotSimple2::ChooseNextGridPosition() 
 {
+	// Create movement vector:
+	std::vector<int> movementVector;
+
 	// Get the angle:
 	float angle = getAngle();
 
 	// Create movement vector:
-	std::vector<int> movementVector = getMovementVector(angle);
-
-	// When it hits a wall or map edge then pick a new direction based on player location
-
-	// Check direction with glevel.isValid();
+	movementVector = getMovementVector(angle);
 
 	// Move:
 	int x = PositionX(); // Store current x location.
 	int y = PositionY(); // Store current y location.
 
-	int newX = PositionX() + movementVector[0]; // Store new 'x' location.
-	int newY = PositionY() + movementVector[1]; // Store new 'y' location.
+	int newX = x + movementVector[0]; // Store new 'x' location.
+	int newY = y + movementVector[1]; // Store new 'y' location.
 
-	if (gLevel.isValid(newX, newY))
+	// find a collision: 
+	if (gLevel.isValid(newX, newY) != true)
 	{
+		// State that the bot is near a wall:
+		isNearWall = true;
+
+		std::cout << checkWallLocation() << std::endl;
+		handleCorner = checkForCorner();
+
+		if (wallIsRight == true)
+		{
+			movementVector[1] = 1;
+			movementVector[0] = 0;
+		}
+		else if (wallIsRight == false)
+		{
+			movementVector[1] = -1;
+			movementVector[0] = 0;
+		}
+		else if (wallIsUp == true)
+		{
+			movementVector[1] = 0;
+			movementVector[0] = 1;
+		}
+		else if (wallIsUp == false)
+		{
+			movementVector[1] = 0;
+			movementVector[0] = -1;
+		}
+
+		newX = x + movementVector[0];
+		newY = y + movementVector[1];
+
+		prevX = PositionX();
+		prevY = PositionY();
+
 		SetNext(newX, newY, gLevel);
 	}
 	else
 	{
-		
+		prevX = PositionX();
+		prevY = PositionY();
+
+		SetNext(newX, newY, gLevel);
 	}
+}
+
+bool cBotSimple2::checkForCorner()
+{
+	if ((PositionX() == prevX) && (PositionY() == prevY))
+	{
+		std::cout << "CORNER" << std::endl;
+		return true;
+	}
+	
+	return false;
+}
+
+std::string cBotSimple2::checkWallLocation()
+{
+	if (gLevel.isValid((PositionX() + 1), PositionY()) != true)
+	{
+		wallIsRight = true;
+		return "right";
+	}
+	else if (gLevel.isValid((PositionX() - 1), PositionY()) != true)
+	{
+		wallIsRight = false;
+		return "left";
+	}
+	else if (gLevel.isValid(PositionX(), (PositionY() - 1) != true))
+	{
+		wallIsUp = true;
+		return "up";
+	}
+	else if (gLevel.isValid(PositionX(), (PositionY() + 1) != true))
+	{
+		wallIsUp = false;
+		return  "Down";
+	}
+
+	return "";
 }
 
 float cBotSimple2::getAngle() 
@@ -63,6 +141,11 @@ std::vector<int> cBotSimple2::rotateOnCollision(std::vector<int> originalMovemen
 		rtn[1] = originalMovementVector[1] + 1;
 	}
 	else if (PositionY() > gTarget.PositionY())
+	{
+		rtn[0] = originalMovementVector[0];
+		rtn[1] = originalMovementVector[1] - 1;
+	}
+	else if (PositionY() == gTarget.PositionY())
 	{
 		rtn[0] = originalMovementVector[0];
 		rtn[1] = originalMovementVector[1] - 1;

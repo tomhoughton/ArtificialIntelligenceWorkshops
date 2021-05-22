@@ -67,7 +67,7 @@ int main(int argc, char* argv[])
     //======================================================================================
     //Load the map and set target position
     //======================================================================================
-    gLevel.Load("maps/1.txt");
+    gLevel.Load("maps/2.txt");
     // gTarget.SetCurrent(30, 20, gLevel);
    // gTarget.SetCurrent(20, 20, gLevel);
     gTarget.SetCurrent(30, 20, gLevel);
@@ -83,7 +83,7 @@ int main(int argc, char* argv[])
     // Create Bot
     //======================================================================================
     cBotBase* pBot = new cBotSimple2();
-    pBot->SetCurrent(7, 20, gLevel);
+    pBot->SetCurrent(7, 10, gLevel);
 
     //======================================================================================
     //Main loop
