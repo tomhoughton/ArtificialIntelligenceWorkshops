@@ -82,7 +82,7 @@ int main(int argc, char* argv[])
     //======================================================================================
     // Create Bot
     //======================================================================================
-    cBotBase* pBot = new cBotSimple2();
+    cBotBase* pBot = new cDijkstra();
     pBot->SetCurrent(7, 10, gLevel);
 
     //======================================================================================
@@ -123,6 +123,21 @@ int main(int argc, char* argv[])
         if (keystate[SDL_SCANCODE_DOWN]) offsetY += 1;
         if (keystate[SDL_SCANCODE_LEFT]) offsetX -= 1;
         if (keystate[SDL_SCANCODE_RIGHT]) offsetX += 1;
+        if (keystate[SDL_SCANCODE_SPACE]) 
+        {
+            static bool p_down = false;
+            if (keystate[SDL_SCANCODE_P])
+            {
+                if (!p_down)
+                {
+                    gDijkstra.Build(*pBot);
+                    p_down = true;
+                }
+            }
+            else {
+                p_down = false;
+            }
+        }
 
         if ((offsetX != 0) || (offsetY != 0))
         {
